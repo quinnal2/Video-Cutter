@@ -1,0 +1,27 @@
+{
+  "name": "video-cutter",
+  "version": "1.0.0",
+  "description": "Lightweight tool for cutting videos",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/quinnal2/Video-Cutter.git"
+  },
+  "author": "Quinn Lawson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/quinnal2/Video-Cutter/issues"
+  },
+  "homepage": "https://github.com/quinnal2/Video-Cutter#readme",
+  "devDependencies": {
+    "electron": "^18.2.4"
+  },
+  "dependencies": {
+    "ffmpeg": "0.0.4",
+    "os": "^0.1.2"
+  }
+}

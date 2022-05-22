@@ -1,0 +1,34 @@
+html, body {
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+}
+
+#main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 20%;
+    box-sizing: border-box;
+}
+
+.control {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+#start-and-end-fields {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+label {
+    margin-right: 20px;
+}
