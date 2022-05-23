@@ -3,6 +3,7 @@ Lightweight tool for cutting videos
 
 Steps to set up/use:
 
-1. Make sure ffmpeg is installed on your computer
-2. Run npm install in the root folder
-3. run npm start
+1. Clone repository
+2. Make sure ffmpeg is installed on your computer
+3. Navigate to repository folder
+4. Run npm install followed by npm start
