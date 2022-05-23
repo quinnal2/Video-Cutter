@@ -8,8 +8,10 @@ function cutVideo() {
 
 window.electronAPI.onCutVideoResult((_event, value) => {
     if(value === 'success') {
-        alert('Video Successfully Processed');
+        //alert('Video Successfully Processed');
+        toastr.success('Video Successfully Processed');
     } else {
-        alert('Error Processing Video');
+        //alert('Error Processing Video');
+        toastr.error('Error Processing Video');
     }
 })
