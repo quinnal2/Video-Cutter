@@ -37,3 +37,9 @@ label {
     display: flex;
     justify-content: center;
 }
+
+#video-player {
+    display: none;
+    width: 100%;
+    margin-bottom: 20px;
+}

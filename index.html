@@ -11,10 +11,11 @@
     </head>
     <body>
         <div id="main-container">
+            <video id="video-player" controls></video>
             <form>
                 <div class="control">
                     <label for="video-select" class="form-label mb-0">Select Video</label>
-                    <input type="file" id="video-select-button" name="video-select" class="form-control" required>
+                    <input type="file" id="video-select-button" name="video-select" class="form-control" required onchange="loadVideo()">
                 </div>
                 <div id="start-and-end-fields">
                     <div class="control" style="margin-right: 20px">

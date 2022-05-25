@@ -20,7 +20,7 @@ function handleCutVideo (event, filePath, startTime, endTime) {
                     event.sender.send('cut-video-result', 'success');
                 } else {
                     console.log(error);
-                    event.sender.sen('cut-video-result', 'error');
+                    event.sender.send('cut-video-result', 'error');
                 }
             });
         }, function (err) {
