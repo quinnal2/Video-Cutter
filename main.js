@@ -1,35 +1,43 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
-const ffmpeg = require('ffmpeg');
+const ffmpeg = require('fluent-ffmpeg');
 
 function handleCutVideo (event, filePath, startTime, endTime) {
     let startUnits = startTime.split(':').map(x => parseInt(x));
     let endUnits = endTime.split(':').map(x => parseInt(x));
-    let duration = (((endUnits[0] * 60 * 60) + (endUnits[1] * 60) + endUnits[2]) - ((startUnits[0] * 60 * 60) + (startUnits[1] * 60) + startUnits[2]));
+    let cutDuration = (((endUnits[0] * 60 * 60) + (endUnits[1] * 60) + endUnits[2]) - ((startUnits[0] * 60 * 60) + (startUnits[1] * 60) + startUnits[2]));
     let fileParts = filePath.slice(filePath.lastIndexOf('\\') + 1).split('.');
+    let originalDuration = 0;
 
-    try {
-        var process = new ffmpeg(filePath);
-        process.then(function (video) {
-            video
-            .setVideoStartTime(startTime)
-            .setVideoDuration(duration)
-            .save(filePath.slice(0, filePath.lastIndexOf('\\') + 1) + fileParts[0] + '_cut.' + fileParts[1], function (error, file) {
-                if (!error) {
-                    console.log('Video file: ' + file);
-                    event.sender.send('cut-video-result', 'success');
-                } else {
-                    console.log(error);
-                    event.sender.send('cut-video-result', 'error');
-                }
-            });
-        }, function (err) {
-            console.log('Error: ' + err);
+    ffmpeg(filePath)
+        .ffprobe(function(err, data) {
+            originalDuration = data.format.duration;
         });
-    } catch (e) {
-        console.log(e.code);
-        console.log(e.msg);
-    }
+
+    ffmpeg(filePath)
+        .setStartTime(startTime)
+        .duration(cutDuration)
+        .on('start', function(commandLine) {
+            event.sender.send('processing-started');
+            console.log('Spawned Ffmpeg with command: ' + commandLine);
+        })
+        .on('progress', function(progress) {
+            if(progress.percent) { // Sometimes percent is undefined
+                let scaledPercent = Math.round(originalDuration / cutDuration * progress.percent);
+
+                console.log('Processing: ' + scaledPercent + '% done');
+                event.sender.send('update-progress', scaledPercent);
+            }
+        })
+        .on('error', function(err) {
+            console.log('An error occurred: ' + err.message);
+            event.sender.send('cut-video-result', 'error');
+        })
+        .on('end', function() {
+            console.log('Processing finished !');
+            event.sender.send('cut-video-result', 'success');
+        })
+        .save(filePath.slice(0, filePath.lastIndexOf('\\') + 1) + fileParts[0] + '_cut.' + fileParts[1]);
 }
 
 const createWindow = () => {
